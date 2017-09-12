@@ -1,9 +1,13 @@
 package Bio::Tools::Run::Alignment::TCoffee;
 
+use utf8;
+use strict;
+use warnings;
+
 use vars qw($AUTOLOAD @ISA $PROGRAM_NAME $PROGRAM_DIR %DEFAULTS
             @TCOFFEE_PARAMS @TCOFFEE_SWITCHES @OTHER_SWITCHES %OK_FIELD
             );
-use strict;
+
 use Cwd;
 use Bio::Seq;
 use Bio::SeqIO;
@@ -12,6 +16,7 @@ use Bio::AlignIO;
 use Bio::Root::IO;
 use Bio::Factory::ApplicationFactoryI;
 use Bio::Tools::Run::WrapperBase;
+
 @ISA = qw(Bio::Tools::Run::WrapperBase
           Bio::Factory::ApplicationFactoryI);
 
