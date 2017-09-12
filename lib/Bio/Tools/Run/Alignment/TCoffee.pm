@@ -40,7 +40,7 @@
 Note: this DESCRIPTION only documents the (Bio)perl interface to
 TCoffee.
 
-=head2 Helping the module find your executable 
+=head2 Helping the module find your executable
 
 You will need to enable TCoffee to find the t_coffee program. This
 can be done in (at least) three ways:
@@ -48,9 +48,9 @@ can be done in (at least) three ways:
  1. Make sure the t_coffee executable is in your path so that
     which t_coffee returns a t_coffee executable on your system.
 
- 2. Define an environmental variable TCOFFEEDIR which is a dir 
+ 2. Define an environmental variable TCOFFEEDIR which is a dir
     which contains the 't_coffee' app:
-    In bash 
+    In bash
     export TCOFFEEDIR=/home/username/progs/T-COFFEE_distribution_Version_1.37/bin
     In csh/tcsh
     setenv TCOFFEEDIR /home/username/progs/T-COFFEE_distribution_Version_1.37/bin
@@ -489,14 +489,14 @@ use Bio::AlignIO;
 use Bio::Root::IO;
 use Bio::Factory::ApplicationFactoryI;
 use Bio::Tools::Run::WrapperBase;
-@ISA = qw(Bio::Tools::Run::WrapperBase 
+@ISA = qw(Bio::Tools::Run::WrapperBase
           Bio::Factory::ApplicationFactoryI);
 
 # You will need to enable TCoffee to find the tcoffee program. This can be done
 # in (at least) twp ways:
 #  1. define an environmental variable TCOFFEE:
 #	export TCOFFEEDIR=/home/progs/tcoffee   or
-#  2. include a definition of an environmental variable TCOFFEEDIR 
+#  2. include a definition of an environmental variable TCOFFEEDIR
 #      in every script that will
 #     use Bio::Tools::Run::Alignment::TCoffee.pm.
 #	BEGIN {$ENV{TCOFFEEDIR} = '/home/progs/tcoffee'; }
@@ -516,7 +516,7 @@ BEGIN {
 			 MATRIX GAPOPEN GAPEXT COSMETIC_PENALTY TG_MODE
 			 WEIGHT SEQ_TO_ALIGN NEWTREE USETREE TREE_MODE
 			 OUTFILE OUTPUT CASE CPU OUT_LIB OUTORDER SEQNOS
-			 RUN_NAME CONVERT 
+			 RUN_NAME CONVERT
                          );
 
     @TCOFFEE_SWITCHES = qw(QUICKTREE);
@@ -659,7 +659,7 @@ sub run{
        return $self->align($seq);
    } elsif( $type =~ /profile/i ) {
        return $self->profile_align($profile,$seq);
-   } else { 
+   } else {
        $self->warn("unrecognized alignment type $type\n");
    }
    return undef;
@@ -672,7 +672,7 @@ sub run{
 	$inputfilename = 't/data/cysprot.fa';
 	$aln = $factory->align($inputfilename);
 or
-	$seq_array_ref = \@seq_array; 
+	$seq_array_ref = \@seq_array;
         # @seq_array is array of Seq objs
 	$aln = $factory->align($seq_array_ref);
  Function: Perform a multiple sequence alignment
@@ -727,7 +727,7 @@ sub profile_align {
     my $self = shift;
     my $input1 = shift;
     my $input2 = shift;
-    
+
     my ($temp,$infilename1,$infilename2,$type1,$type2,$input,$seq);
 
     $self->io->_io_cleanup();
@@ -738,18 +738,18 @@ sub profile_align {
         $self->throw("Unknown type for first argument");
     }
     unless ($type2) {
-        $self->throw("Unknown type for second argument") 
+        $self->throw("Unknown type for second argument")
     }
-    
+
     if (!$infilename1 || !$infilename2) {
      $self->throw("Bad input data: $input1 or $input2 !");
     }
 
     my $param_string = $self->_setparams();
     # run tcoffee
-    my $aln = $self->_run('profile-aln', 
+    my $aln = $self->_run('profile-aln',
 			  [$infilename1,$type1],
-			  [$infilename2,$type2], 
+			  [$infilename2,$type2],
 			  $param_string)
             ;
 }
@@ -758,7 +758,7 @@ sub profile_align {
 =internal _run
 
  Title   :  _run
- Usage   :  Internal function, not to be called directly	
+ Usage   :  Internal function, not to be called directly
  Function:  makes actual system call to tcoffee program
  Example :
  Returns : nothing; tcoffee output is written to a
@@ -804,7 +804,7 @@ sub _run {
                             $type2.$infile2,
                             (map {'M'.$_} $self->methods)
                                             )
-                                        );	
+                                        );
             }
         } else {
             if ($type2 eq 'S') {
@@ -825,11 +825,11 @@ sub _run {
 #    my $commandstring = "t_coffee -output=gcg -parameters $parameterFile" ;    ##MJL
 
     my $commandstring = $self->executable." $instring $param_string";
-    
+
     #$self->debug( "tcoffee command = $commandstring \n");
 
     my $status = system($commandstring);
-    my $outfile = $self->outfile(); 
+    my $outfile = $self->outfile();
 
     if( !-e $outfile || -z $outfile ) {
         $self->warn( "TCoffee call crashed: $? [command $commandstring]\n");
@@ -839,7 +839,7 @@ sub _run {
     # retrieve alignment (Note: MSF format for AlignIO = GCG format of
     # tcoffee)
 
-    my $in  = Bio::AlignIO->new('-file' => $outfile, '-format' => 
+    my $in  = Bio::AlignIO->new('-file' => $outfile, '-format' =>
 				$self->output);
     my $aln = $in->next_aln();
 
@@ -851,8 +851,8 @@ sub _run {
 	    # because TCoffee writes these files to the CWD
 	    if( $Bio::Root::IO::PATHSEP ) {
 		my @line = split(/$Bio::Root::IO::PATHSEP/, $f);
-		$f = pop @line;	
-	    } else { 		
+		$f = pop @line;
+	    } else {
 		(undef, undef, $f) = File::Spec->splitpath($f);
 	    }
 	    unlink $f .'.dnd' if( $f ne '' );
@@ -865,7 +865,7 @@ sub _run {
 =internal _setinput
 
  Title   :  _setinput
- Usage   :  Internal function, not to be called directly	
+ Usage   :  Internal function, not to be called directly
  Function:  Create input file for tcoffee program
  Example :
  Returns : name of file containing tcoffee data input AND
@@ -894,7 +894,7 @@ sub _setinput {
             $header =~ /clustal/i ) { # phylip
             $type = 'A';
         }
-        
+
         # On some systems, having filenames with / in them (ie. a file in a
         # directory) causes t-coffee to completely fail. It warns on all systems.
         # The -no_warning option solves this, but there is still some strange
@@ -904,7 +904,7 @@ sub _setinput {
         # (It's messy here - I just do this to /all/ input files to most easily
         #  catch all variants of providing a profile - it may only be the last
         #  form (isa("Bio::PrimarySeqI")) that causes a problem?)
-        
+
         my (undef, undef, $adjustedfilename) = File::Spec->splitpath($infilename);
         if ($adjustedfilename ne $infilename) {
             my ($fh, $tempfile) = $self->io->tempfile(-dir => cwd());
@@ -917,7 +917,7 @@ sub _setinput {
             $infilename = $tempfile;
             $type = 'S';
         }
-        
+
         close($IN);
         return ($infilename,$type);
     } elsif (ref($input) =~ /ARRAY/i ) {
@@ -928,12 +928,12 @@ sub _setinput {
         if( ! ref($input->[0]) ) {
             $self->warn("passed an array ref which did not contain objects to _setinput");
             return undef;
-        } elsif( $input->[0]->isa('Bio::PrimarySeqI') ) {		
+        } elsif( $input->[0]->isa('Bio::PrimarySeqI') ) {
             $temp =  Bio::SeqIO->new('-fh' => $tfh,
                          '-format' => 'fasta');
             my $ct = 1;
             foreach $seq (@$input) {
-                return 0 unless ( ref($seq) && 
+                return 0 unless ( ref($seq) &&
                           $seq->isa("Bio::PrimarySeqI") );
                 if( ! defined $seq->display_id ||
                     $seq->display_id =~ /^\s+$/) {
@@ -950,7 +950,7 @@ sub _setinput {
             $temp =  Bio::AlignIO->new('-fh' => $tfh,
                            '-format' => $self->aformat);
             foreach my $aln (@$input) {
-                next unless ( ref($aln) && 
+                next unless ( ref($aln) &&
                           $aln->isa("Bio::Align::AlignI") );
                 $temp->write_aln($aln);
             }
@@ -959,7 +959,7 @@ sub _setinput {
             close($tfh);
             $tfh = undef;
             $type = 'A';
-        }  else { 
+        }  else {
             $self->warn( "got an array ref with 1st entry ".
                  $input->[0].
                  " and don't know what to do with it\n");
@@ -977,7 +977,7 @@ sub _setinput {
         undef $tfh;
         return ($infilename,'A');
     }
-    
+
     #  or $input may be a single BioSeq object (to be added to
     # a previous alignment)
     elsif ( $input->isa("Bio::PrimarySeqI")) {
@@ -990,7 +990,7 @@ sub _setinput {
         close($tfh);
         undef $tfh;
         return ($infilename,'S');
-    } else { 
+    } else {
         $self->warn("Got $input and don't know what to do with it\n");
     }
     return 0;
@@ -1000,7 +1000,7 @@ sub _setinput {
 =internal _setparams
 
  Title   :  _setparams
- Usage   :  Internal function, not to be called directly	
+ Usage   :  Internal function, not to be called directly
  Function:  Create parameter inputs for tcoffee program
  Example :
  Returns : parameter string to be passed to tcoffee
@@ -1016,7 +1016,7 @@ sub _setparams {
     my $laststr;
     for  $attr ( @TCOFFEE_PARAMS ) {
 	$value = $self->$attr();
-	next unless (defined $value);	
+	next unless (defined $value);
 	my $attr_key = lc $attr;
 	if( $attr_key =~ /matrix/ ) {
 	    $self->{'_in'} = [ "X".lc($value) ];
@@ -1034,7 +1034,7 @@ sub _setparams {
     }
 
     # Set default output file if no explicit output file selected
-    unless ($self->outfile ) {	
+    unless ($self->outfile ) {
 	my ($tfh, $outfile) = $self->io->tempfile(-dir=>$self->tempdir());
 	close($tfh);
 	undef $tfh;
@@ -1043,13 +1043,13 @@ sub _setparams {
     }
 
     if ($self->quiet() || $self->verbose < 0) { $param_string .= ' -quiet';}
-    
+
     # -no_warning is required on some systems with certain versions or failure
     # is guaranteed
     if ($self->version >= 4 && $self->version < 4.7) {
         $param_string .= ' -no_warning';
     }
-    
+
     return $param_string;
 }
 
@@ -1099,7 +1099,7 @@ sub methods{
  Title   : no_param_checks
  Usage   : $obj->no_param_checks($newval)
  Function: Boolean flag as to whether or not we should
-           trust the sanity checks for parameter values  
+           trust the sanity checks for parameter values
  Returns : value of no_param_checks
  Args    : newvalue (optional)
 
@@ -1110,7 +1110,7 @@ sub methods{
 
  Title   : save_tempfiles
  Usage   : $obj->save_tempfiles($newval)
- Function: 
+ Function:
  Returns : value of save_tempfiles
  Args    : newvalue (optional)
 

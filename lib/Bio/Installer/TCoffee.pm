@@ -38,13 +38,13 @@ BEGIN {
 }
 
 
-=method get_default 
+=method get_default
 
- Title   : get_default 
+ Title   : get_default
  Usage   :
  Function:
  Example :
- Returns : 
+ Returns :
  Args    :
 
 
@@ -63,7 +63,7 @@ sub get_default {
  Usage   : $installer->install();
  Function:
  Example :
- Returns : 
+ Returns :
  Args    :
 
 
@@ -85,7 +85,7 @@ sub install{
  Usage   :
  Function:
  Example :
- Returns : 
+ Returns :
  Args    :
 
 
