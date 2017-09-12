@@ -1,3 +1,20 @@
+package Bio::Tools::Run::Alignment::TCoffee;
+
+use vars qw($AUTOLOAD @ISA $PROGRAM_NAME $PROGRAM_DIR %DEFAULTS
+            @TCOFFEE_PARAMS @TCOFFEE_SWITCHES @OTHER_SWITCHES %OK_FIELD
+            );
+use strict;
+use Cwd;
+use Bio::Seq;
+use Bio::SeqIO;
+use Bio::SimpleAlign;
+use Bio::AlignIO;
+use Bio::Root::IO;
+use Bio::Factory::ApplicationFactoryI;
+use Bio::Tools::Run::WrapperBase;
+@ISA = qw(Bio::Tools::Run::WrapperBase
+          Bio::Factory::ApplicationFactoryI);
+
 # ABSTRACT: Object for the calculation of a multiple sequence alignment from a set of unaligned sequences or alignments using the TCoffee program
 # AUTHOR: Jason Stajich <jason@bioperl.org>
 # AUTHOR: Peter Schattner <schattner@alum.mit.edu>
@@ -474,23 +491,6 @@ object, or through get/set methods of the same name (lowercase).
                you want to turn it into a library).
 
 =cut
-
-package Bio::Tools::Run::Alignment::TCoffee;
-
-use vars qw($AUTOLOAD @ISA $PROGRAM_NAME $PROGRAM_DIR %DEFAULTS
-            @TCOFFEE_PARAMS @TCOFFEE_SWITCHES @OTHER_SWITCHES %OK_FIELD
-            );
-use strict;
-use Cwd;
-use Bio::Seq;
-use Bio::SeqIO;
-use Bio::SimpleAlign;
-use Bio::AlignIO;
-use Bio::Root::IO;
-use Bio::Factory::ApplicationFactoryI;
-use Bio::Tools::Run::WrapperBase;
-@ISA = qw(Bio::Tools::Run::WrapperBase
-          Bio::Factory::ApplicationFactoryI);
 
 # You will need to enable TCoffee to find the tcoffee program. This can be done
 # in (at least) twp ways:
