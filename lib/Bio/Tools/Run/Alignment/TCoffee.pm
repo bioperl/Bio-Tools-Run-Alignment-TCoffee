@@ -495,11 +495,11 @@ use Bio::Tools::Run::WrapperBase;
 # You will need to enable TCoffee to find the tcoffee program. This can be done
 # in (at least) twp ways:
 #  1. define an environmental variable TCOFFEE:
-#	export TCOFFEEDIR=/home/progs/tcoffee   or
+#        export TCOFFEEDIR=/home/progs/tcoffee   or
 #  2. include a definition of an environmental variable TCOFFEEDIR
 #      in every script that will
 #     use Bio::Tools::Run::Alignment::TCoffee.pm.
-#	BEGIN {$ENV{TCOFFEEDIR} = '/home/progs/tcoffee'; }
+#        BEGIN {$ENV{TCOFFEEDIR} = '/home/progs/tcoffee'; }
 
 BEGIN {
     $PROGRAM_NAME = 't_coffee';
@@ -512,11 +512,11 @@ BEGIN {
 
 
     @TCOFFEE_PARAMS = qw(IN TYPE PARAMETERS DO_NORMALISE EXTEND
-			 DP_MODE KTUPLE NDIAGS DIAG_MODE SIM_MATRIX
-			 MATRIX GAPOPEN GAPEXT COSMETIC_PENALTY TG_MODE
-			 WEIGHT SEQ_TO_ALIGN NEWTREE USETREE TREE_MODE
-			 OUTFILE OUTPUT CASE CPU OUT_LIB OUTORDER SEQNOS
-			 RUN_NAME CONVERT
+                         DP_MODE KTUPLE NDIAGS DIAG_MODE SIM_MATRIX
+                         MATRIX GAPOPEN GAPEXT COSMETIC_PENALTY TG_MODE
+                         WEIGHT SEQ_TO_ALIGN NEWTREE USETREE TREE_MODE
+                         OUTFILE OUTPUT CASE CPU OUT_LIB OUTORDER SEQNOS
+                         RUN_NAME CONVERT
                          );
 
     @TCOFFEE_SWITCHES = qw(QUICKTREE);
@@ -525,7 +525,7 @@ BEGIN {
 
 # Authorize attribute fields
     foreach my $attr ( @TCOFFEE_PARAMS, @TCOFFEE_SWITCHES, @OTHER_SWITCHES ) {
-	$OK_FIELD{$attr}++; }
+        $OK_FIELD{$attr}++; }
 }
 
 =head2 program_name
@@ -557,22 +557,22 @@ sub program_dir {
 }
 
 sub new {
-	my ($class,@args) = @_;
-	my $self = $class->SUPER::new(@args);
-	my ($attr, $value);
+    my ($class,@args) = @_;
+    my $self = $class->SUPER::new(@args);
+    my ($attr, $value);
 
-	while (@args) {
-		$attr =   shift @args;
-		$value =  shift @args;
-		next if( $attr =~ /^-/); # don't want named parameters
-		$self->$attr($value);
-	}
-	$self->matrix($DEFAULTS{'MATRIX'}) unless( $self->matrix );
-	$self->output($DEFAULTS{'OUTPUT'}) unless( $self->output );
-	$self->methods($DEFAULTS{'METHODS'}) unless $self->methods;
-	# $self->aformat($DEFAULTS{'AFORMAT'}) unless $self->aformat;
+    while (@args) {
+        $attr =   shift @args;
+        $value =  shift @args;
+        next if( $attr =~ /^-/); # don't want named parameters
+        $self->$attr($value);
+    }
+    $self->matrix($DEFAULTS{'MATRIX'}) unless( $self->matrix );
+    $self->output($DEFAULTS{'OUTPUT'}) unless( $self->output );
+    $self->methods($DEFAULTS{'METHODS'}) unless $self->methods;
+    # $self->aformat($DEFAULTS{'AFORMAT'}) unless $self->aformat;
 
-	return $self;
+    return $self;
 }
 
 sub AUTOLOAD {
@@ -633,8 +633,8 @@ sub version {
 
  Title   : run
  Usage   : my $output = $application->run(-seq     => $seq,
-					  -profile => $profile,
-					  -type    => 'profile-aln');
+                                          -profile => $profile,
+                                          -type    => 'profile-aln');
  Function: Generic run of an application
  Returns : Bio::SimpleAlign object
  Args    : key-value parameters allowed for TCoffee runs AND
@@ -652,9 +652,9 @@ sub version {
 sub run{
    my ($self,@args) = @_;
    my ($type,$seq,$profile) = $self->_rearrange([qw(TYPE
-						    SEQ
-						    PROFILE)],
-						@args);
+                                                    SEQ
+                                                    PROFILE)],
+                                                @args);
    if( $type =~ /align/i ) {
        return $self->align($seq);
    } elsif( $type =~ /profile/i ) {
@@ -669,12 +669,12 @@ sub run{
 
  Title   : align
  Usage   :
-	$inputfilename = 't/data/cysprot.fa';
-	$aln = $factory->align($inputfilename);
+        $inputfilename = 't/data/cysprot.fa';
+        $aln = $factory->align($inputfilename);
 or
-	$seq_array_ref = \@seq_array;
+        $seq_array_ref = \@seq_array;
         # @seq_array is array of Seq objs
-	$aln = $factory->align($seq_array_ref);
+        $aln = $factory->align($seq_array_ref);
  Function: Perform a multiple sequence alignment
  Returns : Reference to a SimpleAlign object containing the
            sequence alignment.
@@ -695,7 +695,7 @@ sub align {
     $self->io->_io_cleanup();
     my ($infilename,$type) = $self->_setinput($input);
     if (!$infilename) {
-	$self->throw("Bad input data or less than 2 sequences in $input !");
+        $self->throw("Bad input data or less than 2 sequences in $input !");
     }
 
     my $param_string = $self->_setparams();
@@ -748,9 +748,9 @@ sub profile_align {
     my $param_string = $self->_setparams();
     # run tcoffee
     my $aln = $self->_run('profile-aln',
-			  [$infilename1,$type1],
-			  [$infilename2,$type2],
-			  $param_string)
+                          [$infilename1,$type1],
+                          [$infilename2,$type2],
+                          $param_string)
             ;
 }
 #################################################
@@ -840,23 +840,23 @@ sub _run {
     # tcoffee)
 
     my $in  = Bio::AlignIO->new('-file' => $outfile, '-format' =>
-				$self->output);
+                                $self->output);
     my $aln = $in->next_aln();
 
     # Replace file suffix with dnd to find name of dendrogram file(s) to delete
     if( ! $self->keepdnd ) {
-	foreach my $f ( $infilename, $infile1, $infile2 ) {
-	    next if( !defined $f || $f eq '');
-	    $f =~ s/\.[^\.]*$// ;
-	    # because TCoffee writes these files to the CWD
-	    if( $Bio::Root::IO::PATHSEP ) {
-		my @line = split(/$Bio::Root::IO::PATHSEP/, $f);
-		$f = pop @line;
-	    } else {
-		(undef, undef, $f) = File::Spec->splitpath($f);
-	    }
-	    unlink $f .'.dnd' if( $f ne '' );
-	}
+        foreach my $f ( $infilename, $infile1, $infile2 ) {
+            next if( !defined $f || $f eq '');
+            $f =~ s/\.[^\.]*$// ;
+            # because TCoffee writes these files to the CWD
+            if( $Bio::Root::IO::PATHSEP ) {
+                my @line = split(/$Bio::Root::IO::PATHSEP/, $f);
+                $f = pop @line;
+            } else {
+                (undef, undef, $f) = File::Spec->splitpath($f);
+            }
+            unlink $f .'.dnd' if( $f ne '' );
+        }
     }
     return $aln;
 }
@@ -1015,31 +1015,31 @@ sub _setparams {
     $param_string = '';
     my $laststr;
     for  $attr ( @TCOFFEE_PARAMS ) {
-	$value = $self->$attr();
-	next unless (defined $value);
-	my $attr_key = lc $attr;
-	if( $attr_key =~ /matrix/ ) {
-	    $self->{'_in'} = [ "X".lc($value) ];
-	} else {
-	    $attr_key = ' -'.$attr_key;
-	    $param_string .= $attr_key .'='.$value;
-	}
+        $value = $self->$attr();
+        next unless (defined $value);
+        my $attr_key = lc $attr;
+        if( $attr_key =~ /matrix/ ) {
+            $self->{'_in'} = [ "X".lc($value) ];
+        } else {
+            $attr_key = ' -'.$attr_key;
+            $param_string .= $attr_key .'='.$value;
+        }
    }
     for  $attr ( @TCOFFEE_SWITCHES) {
-	$value = $self->$attr();
-	next unless ($value);
-	my $attr_key = lc $attr; #put switches in format expected by tcoffee
-	$attr_key = ' -'.$attr_key;
-	$param_string .= $attr_key ;
+        $value = $self->$attr();
+        next unless ($value);
+        my $attr_key = lc $attr; #put switches in format expected by tcoffee
+        $attr_key = ' -'.$attr_key;
+        $param_string .= $attr_key ;
     }
 
     # Set default output file if no explicit output file selected
     unless ($self->outfile ) {
-	my ($tfh, $outfile) = $self->io->tempfile(-dir=>$self->tempdir());
-	close($tfh);
-	undef $tfh;
-	$self->outfile($outfile);
-	$param_string .= " -outfile=$outfile" ;
+        my ($tfh, $outfile) = $self->io->tempfile(-dir=>$self->tempdir());
+        close($tfh);
+        undef $tfh;
+        $self->outfile($outfile);
+        $param_string .= " -outfile=$outfile" ;
     }
 
     if ($self->quiet() || $self->verbose < 0) { $param_string .= ' -quiet';}
