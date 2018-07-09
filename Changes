@@ -3,6 +3,11 @@ Summary of important user-visible changes for Bio-Tools-Run-Alignment-TCoffee
 
 {{$NEXT}}
 
+  * Bio::Installer::TCoffee has been removed.  Not only did it no
+    longer work and was several years out of date, it was also
+    unsecure.  Either install T-Coffee via your system package
+    manager, or download it from upstream.
+
 1.7.3     2017-09-27 18:23:30+01:00 Europe/London
 
   * Replace requires_external.t with a check in the Makefile.PL for
