@@ -3,6 +3,8 @@ Summary of important user-visible changes for Bio-Tools-Run-Alignment-TCoffee
 
 {{$NEXT}}
 
+1.7.4     2018-07-09 19:30:49+01:00 Europe/London
+
   * Bio::Installer::TCoffee has been removed.  Not only did it no
     longer work and was several years out of date, it was also
     unsecure.  Either install T-Coffee via your system package
