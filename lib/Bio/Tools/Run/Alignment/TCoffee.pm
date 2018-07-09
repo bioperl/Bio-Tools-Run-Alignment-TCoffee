@@ -616,10 +616,10 @@ sub error_string{
 =head2  version
 
  Title   : version
- Usage   : exit if $prog->version() < 1.8
+ Usage   : $prog->version()
  Function: Determine the version number of the program
  Example :
- Returns : float or undef
+ Returns : string
  Args    : none
 
 =cut
@@ -632,6 +632,22 @@ sub version {
     $string =~ /Version_([\d.]+)/;
     return $1 || undef;
 
+}
+
+=internal _numeric_version
+
+Version "numbers" are not numeric values.  In the case of T-Coffee,
+they have an hash component at their end.  This was not the case in
+older releases.  We use the first two numeric parts to do different
+things though.  See also issue #1.
+
+=cut
+
+sub _major_minor_version {
+    my ($self) = @_;
+    my $version = $self->version;
+    $version =~ s/(\d+\.\d+)[\D].*$/$1/;
+    return $version;
 }
 
 =head2 run
@@ -794,7 +810,8 @@ sub _run {
         # in later versions (tested on 5.72 and 7.54) the API for profile
         # alignment changed. This attempts to do the right thing for older
         # versions but corrects for newer ones
-        if ($self->version && $self->version < 5) {
+        if ($self->_major_minor_version
+            && $self->_major_minor_version < 5) {
             # this breaks severely on newer TCoffee (>= v5)
             unless (($self->matrix =~ /none/i) || ($self->matrix =~ /null/i) ) {
                 $instring = '-in='.join(',',
@@ -1051,7 +1068,8 @@ sub _setparams {
 
     # -no_warning is required on some systems with certain versions or failure
     # is guaranteed
-    if ($self->version >= 4 && $self->version < 4.7) {
+    if ($self->_major_minor_version >= 4
+        && $self->_major_minor_version < 4.7) {
         $param_string .= ' -no_warning';
     }
 
