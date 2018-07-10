@@ -125,7 +125,7 @@ object, or through get/set methods of the same name (lowercase).
                to 0 then extension is not made, if set to 1 extension
                is made on all pairs in the library.  If extension is
                set to another positive value, the extension is only
-               carried out on pairs having a weigth value superior to
+               carried out on pairs having a weight value superior to
                the specified limit.
 
 =head2 DP_NORMALISE
